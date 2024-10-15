@@ -4,6 +4,7 @@ const databaseConnect = require('./config/database');
 const bodyParser = require('body-parser');
 const signUp = require('./controller/signUp');
 const expressLayout = require('express-ejs-layouts')
+const uploader = require('./middleware/uploadFile');
 
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
@@ -12,6 +13,7 @@ databaseConnect();
 // Enable JSON parsing for request bodies
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(express.static("public"));
 
 //set EJs as the templating engine
 app.set('view engine','ejs');
@@ -25,4 +27,8 @@ app.listen(PORT,()=>{
 app.get('/', (req, res) => {
     res.render("login");
 })
-app.use('/auth',signUp.signup);
+
+app.get('/signup', (req, res) => {
+    res.render("signup");
+})
+app.post('/auth',uploader.single('image1'), signUp.signup); //name image1 should be same as we provided from  frontend

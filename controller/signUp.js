@@ -2,7 +2,9 @@ const signUpData = require("../models/signUp");
 
 exports.signup = async (req, res) => {
     const { name, email,gender } = req.body;
-    console.log("data",name,email,gender);
+    const image1 = req.file.filename;
+
+    console.log("data",name,email,gender,image1);
     //validation
     if (!name || !email || !gender ) {
         return res.status(404).json({
